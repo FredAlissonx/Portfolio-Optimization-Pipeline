@@ -17,7 +17,9 @@ class LoggingSetup:
 
     Methods
     -------
-    setup_logging(config_path: Optional[str] = None) -> None
+    _ensure_logs_directory_exists:
+        Create if logs directory does not exist.
+    _setup_logging(config_path: Optional[str] = None) -> None
         Configures logging using a YAML file or falls back to basic configuration.
     get_logger(logger_name: str) -> logging.Logger
         Retrieves a logger instance by its name.
@@ -34,7 +36,14 @@ class LoggingSetup:
     _DEFAULT_CONFIG_PATH: Optional[str] = os.getenv("LOGGING_CONFIG_PATH")
 
     @classmethod
-    def setup_logging(cls, config_path: Optional[str] = None) -> None:
+    def _ensure_logs_directory_exists(cls):
+        """Ensure the logs directory exists. If it does not, it creates a directory logs"""
+        logs_dir = os.path.join(os.getcwd(), "logs")
+        if not os.path.exists(logs_dir):
+            os.makedirs(logs_dir)
+            
+    @classmethod
+    def _setup_logging(cls, config_path: Optional[str] = None) -> None:
         """
         Configures logging using a YAML file or falls back to basic configuration.
 
@@ -68,6 +77,9 @@ class LoggingSetup:
                 config = yaml.safe_load(file)
                 if not isinstance(config, dict):
                     raise ValueError("Malformed logging configuration file.")
+            
+            cls._ensure_logs_directory_exists()
+            
             logging.config.dictConfig(config)
             logging.info(f"Logging setup complete using configuration from: {config_path}")
         except (FileNotFoundError, ValueError, yaml.YAMLError) as e:
@@ -92,7 +104,7 @@ class LoggingSetup:
             A configured logger instance.
         """
         if not cls._is_configured:
-            cls.setup_logging()
+            cls._setup_logging()
         return logging.getLogger(logger_name)
 
     @classmethod
