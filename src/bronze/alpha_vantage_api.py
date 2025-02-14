@@ -62,7 +62,7 @@ class AlphaVantageAPI:
                 return None
 
             return data
-        except requests.exceptions.RequestException as e:
+        except (requests.exceptions.RequestException, ValueError) as e:
             log_br.error(f"Request failed: {e}")
             return None
 
