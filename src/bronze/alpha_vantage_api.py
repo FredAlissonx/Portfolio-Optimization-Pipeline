@@ -2,14 +2,12 @@ from dotenv import load_dotenv
 from typing import Optional, Dict, List
 from utils.logging_setup import LoggingSetup
 from utils.api_utils import APIUtils
-import pandas as pd
 
 load_dotenv()
 log_br = LoggingSetup.get_bronze_logger()
 
 class AlphaVantageAPIFetcher(APIUtils):
     BASE_URL: str = "https://www.alphavantage.co/query"
-    DEFAULT_TIMEOUT: int = 10
     
     @classmethod
     def _setup_params(cls, symbol: str) -> dict:
