@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from typing import Optional, Dict, List
 from utils.logging_setup import LoggingSetup
 from utils.api_utils import APIUtils
-import pandas as pd
 
 load_dotenv()
 log_br = LoggingSetup.get_bronze_logger()
