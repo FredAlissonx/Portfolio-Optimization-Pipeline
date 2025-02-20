@@ -72,7 +72,7 @@ class APIUtils:
         Returns:
             Optional[Dict[str, Any]]: The validated data if no errors or warnings are found; otherwise, None.
         """
-        if data is None:
+        if data is None or data.get("data") == []:
             bronze_logger.error(f"No data returned for {symbol}.")
             return None
         if "Error Message" in data:
@@ -80,5 +80,8 @@ class APIUtils:
             return None
         if "Note" in data:
             bronze_logger.warning(f"Rate limit hit for {symbol}: {data['Note']}")
+            return None
+        if "data" not in data:
+            bronze_logger.error(f"Unexpected response structure for {symbol}")
             return None
         return data
