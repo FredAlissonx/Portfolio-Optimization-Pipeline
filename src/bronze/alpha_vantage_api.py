@@ -48,10 +48,10 @@ class AlphaVantageAPIFetcher(APIUtils):
             Optional[Dict]: A dictionary containing the API data if successful; otherwise, None.
         """
         params = cls._setup_params(symbol = symbol)
-        data = cls._fetch_data(params = params)
-        super()._validate_response(data = data, symbol = symbol)
+        raw_data = cls._fetch_data(params = params)
+        validate_data = super()._validate_response(data = raw_data, symbol = symbol)
         
-        return data
+        return validate_data
         
     @classmethod
     def fetch_batch_data(cls, symbols: List[str]) -> Dict:
