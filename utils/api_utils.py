@@ -72,7 +72,7 @@ class APIUtils:
         Returns:
             Optional[Dict[str, Any]]: The validated data if no errors or warnings are found; otherwise, None.
         """
-        if data is None or data.get("data") == []:
+        if data is None:
             bronze_logger.error(f"No data returned for {symbol}.")
             return None
         if "Error Message" in data:
